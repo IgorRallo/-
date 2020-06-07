@@ -1,0 +1,583 @@
+Клас Main 
+
+ 
+
+public class Main { 
+
+public static void main(String[] args){ 
+
+StoneCollection&lt;Stones&gt; necklace = new StoneCollection&lt;Stones&gt;(); 
+
+Stones s1 = new Stones(&quot;Rubin&quot;, 3.95, 600, 2.1); 
+
+Stones s2 = new Stones(&quot;Agate&quot;, 5.89, 200, 1.7); 
+
+Stones s3 = new Stones(&quot;Quartz &quot;, 10.2, 573, 5.3); 
+
+Stones s4 = new Stones(&quot;Diamond&quot;, 2.72, 11830, 15.1); 
+
+Stones s5 = new Stones(&quot;Hyacinth&quot;, 3.91, 167, 2.56); 
+
+Stones s6 = new Stones(&quot;Onyx&quot;, 8.34, 720, 4.21); 
+
+necklace.add(s1); 
+
+necklace.add(s2); 
+
+necklace.add(s3); 
+
+necklace.add(s1); 
+
+necklace.remove(s2); 
+
+StoneCollection&lt;Stones&gt; necklace1 = new StoneCollection&lt;Stones&gt;(); 
+
+necklace1.add(s4); 
+
+necklace1.add(s5); 
+
+necklace1.add(s6); 
+
+  
+
+necklace.addAll(necklace1); 
+
+Object[] mas = necklace.toArray(); 
+
+for (Object object : mas) { 
+
+Stones s = (Stones)object; 
+
+System.out.println(s.getName()); 
+
+} 
+
+} 
+
+} 
+
+ 
+
+ 
+
+Клас ListElement 
+
+class ListElement { 
+
+ 
+
+ListElement next; 
+
+Stones data; 
+
+} 
+
+Клас List 
+
+ 
+
+class List { 
+
+ 
+
+private ListElement head; 
+
+private ListElement tail; 
+
+public ListElement getHead() { 
+
+return head; 
+
+} 
+
+ 
+
+  
+
+void addFront(Stones data) { 
+
+ListElement a = new ListElement(); 
+
+a.data = data; 
+
+if (head == null) { 
+
+head = a; 
+
+tail = a; 
+
+} else { 
+
+a.next = head; 
+
+head = a; 
+
+} 
+
+} 
+
+void addBack(Stones data) { 
+
+ListElement a = new ListElement(); 
+
+a.data = (Stones) data; 
+
+if (tail == null) { 
+
+head = a; 
+
+tail = a; 
+
+} else { 
+
+tail.next = a; 
+
+tail = a; 
+
+} 
+
+} 
+
+void delEl(Stones data) { 
+
+if (head == null) 
+
+return; 
+
+if (head == tail) { 
+
+head = null; 
+
+tail = null; 
+
+return; 
+
+} 
+
+if (head.data == data) { 
+
+head = head.next; 
+
+return; 
+
+} 
+
+ListElement t = head; 
+
+while (t.next != null) { 
+
+if (t.next.data == data) { 
+
+if (tail == t.next) { 
+
+tail = t; 
+
+} 
+
+t.next = t.next.next; 
+
+return; 
+
+} 
+
+t = t.next; 
+
+} 
+
+} 
+
+} 
+
+ 
+
+ 
+
+ 
+
+Клас StoneCollection 
+
+ 
+
+import java.lang.reflect.Array; 
+
+import java.util.Collection; 
+
+import java.util.Iterator; 
+
+import java.util.Set; 
+
+  
+
+ 
+
+public class StoneCollection &lt;T&gt; implements Set&lt;Stones&gt; { 
+
+private List s = new List(); 
+
+private int size = 0; 
+
+public StoneCollection (){ 
+
+} 
+
+public StoneCollection (Stones stn){ 
+
+add(stn); 
+
+} 
+
+ 
+
+public StoneCollection(Collection&lt;? extends Stones&gt; stn){ 
+
+addAll(stn); 
+
+} 
+
+@Override 
+
+public boolean add(Stones stn) { 
+
+boolean flag = true; 
+
+ListElement t = s.getHead(); 
+
+while (t != null) { 
+
+if (t.data==stn) { 
+
+flag = false; 
+
+break; 
+
+} 
+
+t = t.next; 
+
+} 
+
+if (flag) { 
+
+s.addBack(stn); 
+
+size++; 
+
+} 
+
+return flag; 
+
+} 
+
+ 
+
+@Override 
+
+  
+
+public boolean addAll(Collection&lt;? extends Stones&gt; c) { 
+
+Iterator&lt;? extends Stones&gt; iterator = c.iterator(); 
+
+boolean flag = false; 
+
+while (iterator.hasNext()) { 
+
+flag = add((Stones) iterator.next()); 
+
+} 
+
+return flag; 
+
+} 
+
+@Override 
+
+public void clear() { 
+
+s = null; 
+
+s = new List(); 
+
+} 
+
+ 
+
+@Override 
+
+public boolean contains(Object o) { 
+
+boolean flag = add((Stones) o); 
+
+if (flag) { 
+
+s.delEl((Stones) o); 
+
+return flag==false; 
+
+} 
+
+} 
+
+@Override 
+
+public boolean containsAll(Collection&lt;?&gt; c) { 
+
+boolean flag = true; 
+
+Iterator&lt;Stones&gt; iterator = (Iterator&lt;Stones&gt;) c.iterator(); 
+
+while (iterator.hasNext()) { 
+
+flag = contains((Stones) iterator.next()); 
+
+if (flag==false){ 
+
+break; 
+
+} 
+
+} 
+
+return flag; 
+
+} 
+
+@Override 
+
+public boolean isEmpty() { 
+
+return s.getHead()==null; 
+
+} 
+
+@Override 
+
+public Iterator&lt;Stones&gt; iterator() { 
+
+return new StoneIterator(); 
+
+} 
+
+@Override 
+
+public boolean remove(Object o) { 
+
+if (contains(o)) { 
+
+  
+
+s.delEl((Stones) o); 
+
+size--; 
+
+return true; 
+
+} else { 
+
+return false; 
+
+  
+
+} 
+
+} 
+
+ 
+
+@Override 
+
+public boolean removeAll(Collection&lt;?&gt; c) { 
+
+boolean flag = false; 
+
+for (Object object : c) { 
+
+flag = remove(object); 
+
+} 
+
+return flag; 
+
+} 
+
+@Override 
+
+public boolean retainAll(Collection&lt;?&gt; c) { 
+
+boolean flag = true; 
+
+Iterator&lt;Stones&gt; iterator = iterator(); 
+
+while (iterator.hasNext()) { 
+
+Stones stones = (Stones) iterator.next(); 
+
+flag = c.contains(stones); 
+
+if (flag == false) 
+
+remove(stones); 
+
+  
+
+} 
+
+return flag == false; 
+
+} 
+
+@Override 
+
+public int size() { 
+
+return size; 
+
+} 
+
+@Override 
+
+public Object[] toArray() { 
+
+int i = 0; 
+
+Object[] mas = new Object[size]; 
+
+Iterator&lt;Stones&gt; iterator = iterator(); 
+
+while (iterator.hasNext()) { 
+
+mas[i] = iterator.next(); 
+
+i++; 
+
+} 
+
+return mas; 
+
+} 
+
+@Override 
+
+public &lt;T&gt; T[] toArray(T[] array) { 
+
+int size = size(); 
+
+  
+
+if (array.length &lt; size) { array = (T[]) 
+
+Array.newInstance(array.getClass().getComponentType(), size); 
+
+} else if (array.length &gt; size) { 
+
+array[size] = null; 
+
+} 
+
+int i = 0; 
+
+for (Stones e: this) { 
+
+array[i] = (T) e; 
+
+i++; 
+
+} 
+
+return array; 
+
+} 
+
+class StoneIterator implements Iterator { 
+
+private ListElement thisElement = s.getHead(); 
+
+@Override 
+
+public boolean hasNext() { 
+
+return thisElement != null; 
+
+} 
+
+ 
+
+@Override 
+
+public Stones next() { 
+
+Stones s = thisElement.data; 
+
+thisElement = thisElement.next; 
+
+return s; 
+
+} 
+
+@Override 
+
+public void remove() { 
+
+s.delEl(thisElement.data); 
+
+} 
+
+} 
+
+} 
+
+ 
+
+ 
+
+Клас Stones 
+
+  
+
+public class Stones { 
+
+private double weight, clarity; 
+
+private int price; 
+
+private String name; 
+
+ 
+
+Stones(String name, double weight, int price, double clarity){ 
+
+this.name = name; 
+
+this.weight = weight; 
+
+this.price = price; 
+
+this.clarity = clarity; 
+
+} 
+
+public String getName(){ 
+
+return name; 
+
+} 
+
+public double getWeight(){ 
+
+return weight; 
+
+} 
+
+public int getPrice(){ 
+
+return price; 
+
+} 
+
+public double getClarity(){ 
+
+return clarity; 
+
+} 
+
+}
