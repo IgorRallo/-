@@ -1,0 +1,375 @@
+package lab5; 
+
+public class Letter { 
+
+private char letter; 
+
+public Letter(char a) { 
+
+letter = a; 
+
+} 
+
+public char getLetter() { 
+
+return letter; 
+
+} 
+
+public void setLetter(char letter) { 
+
+this.letter = letter; 
+
+} 
+
+} 
+
+package lab5; 
+
+public class Punctuation { 
+
+private char symbol; 
+
+ 
+
+private int position; 
+
+public Punctuation(char a, int p) { 
+
+setSymbol(a); 
+
+setPosition(p); 
+
+} 
+
+public char getSymbol() { 
+
+return symbol; 
+
+} 
+
+public void setSymbol(char symbol) { 
+
+this.symbol = symbol; 
+
+} 
+
+public int getPosition() { 
+
+return position; 
+
+} 
+
+  
+
+ 
+
+public void setPosition(int position) { 
+
+this.position = position; 
+
+} 
+
+} 
+
+package lab5; 
+
+public class Word { 
+
+private String word; 
+
+ 
+
+private Letter[] letters; 
+
+public Word(String a) { 
+
+setWord(a); 
+
+this.letters = new Letter[a.length()]; 
+
+for (int i = 0; i &lt; a.length(); i++) { 
+
+letters[i] = new Letter(a.charAt(i)); 
+
+} 
+
+} 
+
+public String getWord() { 
+
+return new String(word); 
+
+} 
+
+ 
+
+public void setWord(String word) { 
+
+this.word = new String(word); 
+
+} 
+
+public Letter[] getLetters() { 
+
+return letters.clone(); 
+
+} 
+
+public void setLetters(Letter[] letter) { 
+
+this.letters = letter.clone(); 
+
+} 
+
+} 
+
+package lab5; 
+
+import java.util.ArrayList; 
+
+public class Sentence { 
+
+private String sent; 
+
+private Word[] words; 
+
+private ArrayList&lt;Punctuation&gt; p; 
+
+ 
+
+public Sentence(String a, char s) { 
+
+setSent(a + s); 
+
+ArrayList&lt;Punctuation&gt; p1 = new ArrayList&lt;Punctuation&gt;(); 
+
+for (int i = 0; i &lt; a.length(); i++) { 
+
+if (a.charAt(i) == &#39;,&#39; || a.charAt(i) == &#39;;&#39; || a.charAt(i) == &#39;:&#39; 
+
+  
+
+|| a.charAt(i) == &#39;-&#39;) { 
+
+p1.add(new Punctuation(a.charAt(i), i)); 
+
+} 
+
+} 
+
+p1.add(new Punctuation(s, a.length())); 
+
+p = p1; 
+
+String sent1[] = a.split(&quot;[,-:;]\\s|\\s[,-:;]|[,-:;]|\\s&quot;); 
+
+int k = 0; 
+
+for (int i = 0; i &lt; sent1.length; i++) { 
+
+if (sent1[i].isEmpty()) { 
+
+k++; 
+
+} 
+
+} 
+
+this.words = new Word[sent1.length - k]; 
+
+for (int i = 0, j = 0; i &lt; sent1.length; i++) { 
+
+if (!sent1[i].isEmpty()) { 
+
+words[j] = new Word(sent1[i]); 
+
+j++; 
+
+} 
+
+} 
+
+} 
+
+ 
+
+public String getSent() { 
+
+return new String(sent); 
+
+} 
+
+public void setSent(String sent) { 
+
+this.sent = new String(sent); 
+
+} 
+
+public Word[] getWords() { 
+
+return words.clone(); 
+
+} 
+
+public void setWord(Word[] word) { 
+
+this.words = word.clone(); 
+
+} 
+
+public ArrayList&lt;Punctuation&gt; getP() { 
+
+return new ArrayList&lt;Punctuation&gt;(p); 
+
+} 
+
+public void setP(ArrayList&lt;Punctuation&gt; p) { 
+
+this.p = new ArrayList&lt;Punctuation&gt;(p); 
+
+} 
+
+} 
+
+package lab5; 
+
+public class Text { 
+
+private String txt; 
+
+private Sentence[] sentence; 
+
+public Text(String s) { 
+
+String s1 = s.replaceAll(&quot;\\s+&quot;, &quot; &quot;); 
+
+setTxt(s1); 
+
+  
+
+; 
+
+String sent1[] = s1.split(&quot;\\.|!|\\?&quot;); 
+
+this.sentence = new Sentence[sent1.length]; 
+
+int z = 0; 
+
+for (int i = 0; i &lt; sent1.length; i++) { 
+
+z = z + sent1[i].length(); 
+
+sentence[i] = new Sentence(sent1[i], s1.charAt(z + i)); 
+
+} 
+
+} 
+
+public String getTxt() { 
+
+return new String(txt); 
+
+} 
+
+public void setTxt(String txt) { 
+
+this.txt = new String(txt); 
+
+} 
+
+public Sentence[] getSentence() { 
+
+return sentence.clone(); 
+
+} 
+
+ 
+
+public void setSentence(Sentence[] sentence) { 
+
+this.sentence = sentence.clone(); 
+
+} 
+
+} 
+
+package lab5; 
+
+public class Lab5 { 
+
+public static void removeOfString(Text t, Letter a, Letter b) { 
+
+boolean k = true; 
+
+  
+
+StringBuffer s = new StringBuffer(); 
+
+for (int i = 0; i &lt; t.getSentence().length; i++) { 
+
+int a1 = t.getSentence()[i].getSent().indexOf(a.getLetter()); 
+
+int b1 = t.getSentence()[i].getSent().lastIndexOf(b.getLetter()); 
+
+if (a1 != -1 &amp;&amp; b1 != -1) { 
+
+s.append(t.getSentence()[i].getSent().substring(0, a1) 
+
++ t.getSentence()[i].getSent().substring(b1 + 1)); 
+
+  
+
+k = false; 
+
+} else { 
+
+s.append(t.getSentence()[i].getSent()); 
+
+} 
+
+} 
+
+if (k) { 
+
+System.out.println(&quot;В данной строке не найдено заданых символов.&quot;); 
+
+} else { 
+
+Text t1 = new Text(s.toString()); 
+
+System.out.println(&quot;Вы ввели текст:&quot; + &quot;\n&quot; + t.getTxt()); 
+
+System.out.println(&quot;Отредактированный текст:&quot;); 
+
+System.out.println(t1.getTxt()); 
+
+} 
+
+} 
+
+public static void main(String[] args) { 
+
+String s = &quot;Толкин подготовил несколько карт Средиземья и отдельных его областей, &quot; 
+
++ &quot;где проходят события его произведений! Не все они были 
+
+  
+
+опубликованы &quot; 
+
+  
+
++ &quot;при жизни.&quot;; 
+
+Text b = new Text(s); 
+
+Letter a = new Letter(&#39;н&#39;); 
+
+Letter k = new Letter(&#39;й&#39;); 
+
+removeOfString(b, a, k); 
+
+} 
+
+} 
