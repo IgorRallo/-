@@ -1,0 +1,231 @@
+package ua.kpi.io92.rallo.lab6; 
+
+import java.util.Arrays; 
+
+import java.util.Comparator; 
+
+public class Munitions { 
+
+private int weight; 
+
+private int price; 
+
+private String material; 
+
+ 
+
+public int getWeight() { 
+
+return weight; 
+
+} 
+
+public void setWeight(int weight) { 
+
+this.weight = weight; 
+
+} 
+
+public int getPrice() { 
+
+return price; 
+
+} 
+
+public void setPrice(int price) { 
+
+this.price = price; 
+
+} 
+
+public String getMaterial() { 
+
+return new String(material); 
+
+} 
+
+public void setMaterial(String material) { 
+
+this.material = new String(material); 
+
+} 
+
+public Munitions(int w, int p, String m) { 
+
+setWeight(w); 
+
+setPrice(p); 
+
+setMaterial(m); 
+
+} 
+
+public Munitions(Munitions obj) { 
+
+setWeight(obj.getWeight()); 
+
+setPrice(obj.getPrice()); 
+
+setMaterial(obj.getMaterial()); 
+
+} 
+
+public static int cost(Munitions[] m) { 
+
+int price = 0; 
+
+for (int i = 0; i &lt; m.length; i++) { 
+
+price = price + m[i].getPrice(); 
+
+} 
+
+return price; 
+
+} 
+
+ 
+
+public static void sortedByWeight(Munitions[] m) { 
+
+Arrays.sort(m, new Comparator&lt;Munitions&gt;() { 
+
+@Override 
+
+public int compare(Munitions m1, Munitions m2) { 
+
+return m1.getWeight() - m2.getWeight(); 
+
+} 
+
+}); 
+
+} 
+
+public static Munitions[] priceRange(Munitions[] m, int a, int b) { 
+
+int length = 0; 
+
+for (int i = 0; i &lt; m.length; i++) { 
+
+if (m[i].getPrice() &gt;= a &amp;&amp; m[i].getPrice() &lt;= b) { 
+
+length++; 
+
+} 
+
+} 
+
+Munitions[] m1 = new Munitions[length]; 
+
+for (int i = 0; i &lt; m.length; i++) { 
+
+if (m[i].getPrice() &gt;= a &amp;&amp; m[i].getPrice() &lt;= b) { 
+
+m1[i] = m[i]; 
+
+} 
+
+} 
+
+if (length == 0) { 
+
+return null; 
+
+} else { 
+
+return m1; 
+
+} 
+
+} 
+
+} 
+
+package ua.kpi.io92.rallo.lab6; 
+
+public class Armor extends Munitions { 
+
+public Armor(int w, int p, String m) { 
+
+super(w, p, m); 
+
+} 
+
+} 
+
+package ua.kpi.io92.rallo.lab6; 
+
+public class Helmet extends Munitions { 
+
+public Helmet(int w, int p, String m) { 
+
+super(w, p, m); 
+
+} 
+
+} 
+
+  
+
+package ua.kpi.io92.rallo.lab6; 
+
+public class Shield extends Munitions { 
+
+public Shield(int w, int p, String m) { 
+
+super(w, p, m); 
+
+} 
+
+} 
+
+package ua.kpi.io92.rallo.lab6; 
+
+public class Main { 
+
+public static void main(String[] args) { 
+
+Helmet h = new Helmet(35, 115, &quot;Железо&quot;); 
+
+  
+
+Armor a = new Armor(25, 200, &quot;Сталь&quot;); 
+
+Shield s = new Shield(10, 110, &quot;Дерево&quot;); 
+
+Munitions[] munitions = { h, a, s }; 
+
+System.out.println(&quot;Общая стоимость амуниции рыцаря: &quot; 
+
+  
+
++ Munitions.cost(munitions)); 
+
+Munitions.sortedByWeight(munitions); 
+
+System.out.println(&quot;Отсортированная по весу аммуниция рыцаря:&quot;); 
+
+for (int i = 0; i &lt; munitions.length; i++) { 
+
+System.out.print(munitions[i].getWeight() + &quot; &quot;); 
+
+} 
+
+System.out.println(); 
+
+Munitions d[]; 
+
+d = Munitions.priceRange(munitions, 50, 200); 
+
+System.out.println(&quot;Аммуниция из данного диапозона цен:&quot;); 
+
+for (int i = 0; i &lt; d.length; i++) { 
+
+System.out.print(d[i].getPrice() + &quot; &quot;); 
+
+} 
+
+} 
+
+} 
