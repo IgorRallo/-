@@ -1,0 +1,77 @@
+import java.util.Arrays;
+import java.util.Comparator;
+class Kosmetika {
+private double price;
+private int quality;
+private String name;
+private boolean gendUsed;
+private String type;
+public Kosmetika(double kprice, int kquality, String kname, boolean kgendUsed,
+String ktype){
+
+price = kprice;
+quality = kquality;
+name = kname;
+gendUsed = kgendUsed;
+type = ktype;
+}
+public double GetPrice() {
+return price;
+}
+public int Get_Quality() {
+return quality;
+}
+public String Get_Name() {
+return name;
+}
+public boolean Get_gendUsed() {
+return gendUsed;
+}
+public String Get_Type() {
+return type;
+}
+public static void main(String[] args) {
+Kosmetika[] arr = {new Kosmetika(5.2,3,&quot;Avon&quot;,false,&quot;lipstick&quot;), new
+
+Kosmetika(20.45, 2 , &quot;Alenka&quot;, false,&quot;touche&quot;),
+
+new Kosmetika(120.99, 1, &quot;Avon&quot;,false,&quot;concealer&quot;), new
+
+Kosmetika(25.99, 2 ,&quot;Cotex&quot;,false,&quot;tampon&quot;),
+
+new Kosmetika(56.65,2,&quot;Gillet&quot;,true,&quot;shaving gel&quot;), new
+
+Kosmetika(400,1,&quot;Boss&quot;,true,&quot;perfume&quot;)};
+for(int i = 0; i &lt; arr.length; i++){
+System.out.print(arr[i].Get_Name(), arr[i].GetPrice(),
+
+arr[i].Get_Quality(), arr[i].Get_Type(), arr[i].Get_gendUsed());
+
+}
+Arrays.sort(arr, new sort_quality());
+for(int i = 0; i &lt; arr.length; i++){
+System.out.println(arr[i].Get_Name(), arr[i].GetPrice(),
+
+arr[i].Get_Quality(), arr[i].Get_Type(), arr[i].Get_gendUsed());
+
+}
+Arrays.sort(arr, new sort_type());
+for(int i = 0; i &lt; arr.length; i++){
+System.out.println(arr[i].Get_Name(), arr[i].GetPrice(),
+
+arr[i].Get_Quality(), arr[i].Get_Type(), arr[i].Get_gendUsed());
+
+}
+
+}
+}
+class sort_quality implements Comparator&lt;Kosmetika&gt; {
+public int compare(Kosmetika q1, Kosmetika q2) {
+return q2.Get_Quality() - q1.Get_Quality();
+}
+}
+class sort_type implements Comparator&lt;Kosmetika&gt;{
+public int compare(Kosmetika type_1, Kosmetika type_2){
+return type_1.Get_Type().compareTo(type_2.Get_Type());
+}
+}
